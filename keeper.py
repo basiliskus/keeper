@@ -59,10 +59,10 @@ class Keeper:
           if len(remote_matching_items) > 0:
             gitem = remote_matching_items[0]
             if gitem.checked != checkmark_checked:
-              print("[sync]: update checkmark found at: {}\n{}".format(fpath, line.strip()))
+              print(f"[sync]: update checkmark found at: {fpath}\n{line.strip()}")
               gitem.checked = checkmark_checked
           else:
-            print("[sync]: adding item found at: {}\n{}".format(fpath, line.strip()))
+            print(f"[sync]: adding item found at: {fpath}\n{line.strip()}")
             glist.add(text, checkmark_checked, gkeepapi.node.NewListItemPlacementValue.Top)
 
       self.keep.sync()
@@ -104,15 +104,15 @@ class Keeper:
     with open(gnode_fpath, 'w+', encoding='utf-8') as gfile:
       if is_list:
         if gnode.title:
-          title = "{}:\n".format(gnode.title)
+          title = f"{gnode.title}:\n"
           gfile.write(title)
 
         for gitem in gnode.unchecked:
-          item = " [ ] {}\n".format(gitem.text)
+          item = f" [ ] {gitem.text}\n"
           gfile.write(item)
 
         for gitem in gnode.checked:
-          item = " [x] {}\n".format(gitem.text)
+          item = f" [x] {gitem.text}\n"
           gfile.write(item)
 
       else:
@@ -153,19 +153,19 @@ class Keeper:
       fname = fpath.stem
       if fname[-2] == '_' and fname[-1].isnumeric():
         fname = fname[:-2]
-      fpath = fpath.with_name("{}_{}{}".format(fname, number, fpath.suffix))
+      fpath = fpath.with_name(f"{fname}_{number}{fpath.suffix}")
       return self._ensure_filename_is_unique(fpath, gnode, number+1)
 
     return fpath
 
   def _generate_footer(self, title, id):
-    return "\n\n---\nid:    {}\ntitle: {}".format(id, title)
+    return f"\n\n---\nid:    {id}\ntitle: {title}"
 
   def _rename_existing_filename(self, fpath, number):
     fname = fpath.stem
     if fname[-2] == '_' and fname[-1].isnumeric():
       fname = fname[:-2]
-    fpath = fpath.with_name("{}_{}{}".format(fname, number, fpath.suffix))
+    fpath = fpath.with_name(f"{fname}_{number}{fpath.suffix}")
 
     if fpath.exists():
       fpath = self._rename_existing_filename(fpath, number+1)
