@@ -170,6 +170,3 @@ class Keeper:
     if fpath.exists():
       fpath = self._rename_existing_filename(fpath, number+1)
     return fpath
-
-  def _generate_footer(self, title, id):
-    return "\n\n---\nid:    {}\ntitle: {}".format(id, title)
