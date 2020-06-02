@@ -52,18 +52,18 @@ class Keeper:
             continue
 
           checkmark = line[1:4].strip()
-          checkmark_checked = (checkmark == "[x]")
+          is_checkmark_checked = (checkmark == "[x]")
           text = line[5:].strip()
 
           remote_matching_items = list(filter(lambda i: i.text.strip() == text, glist.items))
           if len(remote_matching_items) > 0:
             gitem = remote_matching_items[0]
-            if gitem.checked != checkmark_checked:
+            if gitem.checked != is_checkmark_checked:
               print(f"[sync]: update checkmark found at: {fpath}\n{line.strip()}")
-              gitem.checked = checkmark_checked
+              gitem.checked = is_checkmark_checked
           else:
             print(f"[sync]: adding item found at: {fpath}\n{line.strip()}")
-            glist.add(text, checkmark_checked, gkeepapi.node.NewListItemPlacementValue.Top)
+            glist.add(text, is_checkmark_checked, gkeepapi.node.NewListItemPlacementValue.Top)
 
       self.keep.sync()
 
