@@ -1,4 +1,3 @@
-import os
 import pathlib
 import configparser
 
@@ -7,6 +6,7 @@ import gkeepapi
 
 NOTE_FILE_EXTENSION = '.txt'
 LIST_FILE_EXTENSION = '.todo'
+
 
 class Keeper:
 
@@ -39,8 +39,6 @@ class Keeper:
       self._save_locally(gnode, is_list)
 
   def upload(self):
-    added = []
-    deleted = []
 
     for fpath in self._get_list_filepaths():
       lf = self._get_id_title_by_filepath(fpath)
@@ -66,7 +64,6 @@ class Keeper:
             glist.add(text, is_checkmark_checked, gkeepapi.node.NewListItemPlacementValue.Top)
 
       self.keep.sync()
-
 
   def _get_list_filepaths(self):
     return [f for f in self.notes_root.iterdir() if f.suffix == LIST_FILE_EXTENSION]
@@ -94,9 +91,9 @@ class Keeper:
       title = lines[2].strip()[7:]
 
       if separator == '---':
-        return { 'id': id, 'title': title }
+        return {'id': id, 'title': title}
 
-      return { 'id': '', 'title': '' }
+      return {'id': '', 'title': ''}
 
   def _save_locally(self, gnode, is_list):
     gnode_fpath = self._get_gnode_filepath(gnode, is_list)
@@ -154,7 +151,7 @@ class Keeper:
       if fname[-2] == '_' and fname[-1].isnumeric():
         fname = fname[:-2]
       fpath = fpath.with_name(f"{fname}_{number}{fpath.suffix}")
-      return self._ensure_filename_is_unique(fpath, gnode, number+1)
+      return self._ensure_filename_is_unique(fpath, gnode, number + 1)
 
     return fpath
 
@@ -168,5 +165,5 @@ class Keeper:
     fpath = fpath.with_name(f"{fname}_{number}{fpath.suffix}")
 
     if fpath.exists():
-      fpath = self._rename_existing_filename(fpath, number+1)
+      fpath = self._rename_existing_filename(fpath, number + 1)
     return fpath
